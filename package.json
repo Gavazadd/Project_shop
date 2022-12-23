@@ -1,0 +1,20 @@
+{
+  "name": "project_shop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gavazadd/Project_shop.git"
+  },
+  "keywords": [],
+  "author": "Ruslan Uhlianytsia <gavazadd@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Gavazadd/Project_shop/issues"
+  },
+  "homepage": "https://github.com/Gavazadd/Project_shop#readme"
+}
