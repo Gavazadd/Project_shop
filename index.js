@@ -1,5 +1,6 @@
 const express = require('express')
 const mysql = require('mysql2')
+
 const config = require('config');
 
 // File config is in .gitignore
@@ -7,6 +8,7 @@ const PORT = config.get('port') || 5000
 
 const app = express()
 app.use(express.static('public'));
+app.use(express.json())
 app.set('view engine', 'pug');
 
 const con = mysql.createConnection({
@@ -54,7 +56,6 @@ app.get('/cat', function (req, res) {
   });
 
   Promise.all([cat, goods]).then(function (value) {
-    console.log(value[0]);
     res.render('cat', {
       cat: JSON.parse(JSON.stringify(value[0])),
       goods: JSON.parse(JSON.stringify(value[1]))
@@ -75,6 +76,25 @@ app.post('/get-category-list', function (req, res) {
     res.json(result);
   });
 });
+
+app.post('/get-goods-info', function (req, res) {
+  console.log(req.body.key);
+  if (req.body.key.length !=0){
+    con.query('SELECT id,name,cost FROM goods WHERE id IN ('+req.body.key.join(',')+')', function (error, result) {
+      if (error) throw error;
+      console.log(result);
+      let goods = {};
+      for (let i = 0; i < result.length; i++){
+        goods[result[i]['id']] = result[i];
+      }
+      res.json(goods);
+    });
+  }
+  else{
+    res.send('0');
+  }
+});
+
 
 app.listen(PORT, ()=>{
   console.log(`Server has been started on ${PORT}`)
