@@ -35,6 +35,9 @@
   margin: 0 auto;
   padding: 0;
 }
+.row{
+  padding-left: 15%;
+}
 
 /* ------------card ------------------- */
 
@@ -52,10 +55,10 @@
 /* >>>>>>>>>>>>>>>>>>>>>>>>>>NAV>>>>>>>>>>>> */
 
 .site-nav {
-  width: 300px;
+  width: 20%;
   min-height: 100vh;
   position: fixed;
-  /* left: -300px; */
+  left: -22%;
   top: 0;
   z-index: 999999;
   padding: 10px;
