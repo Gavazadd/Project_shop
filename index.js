@@ -20,19 +20,31 @@ const con = mysql.createConnection({
 
 
 app.get('/', function (req, res) {
-  con.query(
-    'SELECT * FROM goods',
-    function (error, result) {
-      if (error) throw error;
-      let goods = {};
-      for (let i = 0; i < result.length; i++) {
-        goods[result[i]['id']] = result[i];
+  let cat = new Promise(function (resolve, reject) {
+    con.query(
+      "select id,name, cost, image, category from (select id,name,cost,image,category, if(if(@curr_category != category, @curr_category := category, '') != '', @k := 0, @k := @k + 1) as ind   from goods, ( select @curr_category := '' ) v ) goods where ind < 3",
+      function (error, result) {
+        if (error) return reject(error);
+        resolve(result);
       }
-      res.render('main', {
-        goods: JSON.parse(JSON.stringify(goods))
-      });
-    }
-  );
+    );
+  });
+  let catDescription = new Promise(function (resolve, reject) {
+    con.query(
+      "SELECT * FROM category",
+      function (error, result) {
+        if (error) return reject(error);
+        resolve(result);
+      }
+    );
+  });
+  Promise.all([cat, catDescription]).then(function (value) {
+    console.log(value[1]);
+    res.render('index', {
+      goods: JSON.parse(JSON.stringify(value[0])),
+      cat: JSON.parse(JSON.stringify(value[1])),
+    });
+  });
 });
 
 app.get('/cat', function (req, res) {
